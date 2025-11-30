@@ -6,7 +6,7 @@
     <link rel="icon" href="/favicon.ico" />
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="LB Phone" />
@@ -20,32 +20,28 @@
     />
     <link href="https://fonts.cdnfonts.com/css/proxima-nova-2" rel="stylesheet" />
 
-    <!-- Mise en page globale : téléphone entier, centré PC & mobile -->
+    <!-- Layout simple : téléphone taille fixe, centré, scroll si l'écran est trop petit -->
     <style>
         html,
         body {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             display: flex;
             justify-content: center;   /* centre horizontal */
-            align-items: center;       /* centre vertical */
+            align-items: center;       /* centre vertical si assez de place */
             background: #ffffff;       /* fond autour du tel */
-            overflow: hidden;
+            overflow-x: hidden;        /* pas de scroll horizontal */
         }
 
-        /* Coquille du téléphone : garde le bon ratio partout */
-        .phone-shell {
-            height: min(100vh, 844px);    /* max 844px de haut, sinon on réduit */
-            aspect-ratio: 390 / 844;      /* ratio du téléphone */
-            max-width: 390px;             /* ne jamais dépasser 390px de large */
-        }
-
-        /* Le LB Phone remplit simplement la coquille */
+        /* Conteneur du téléphone */
         #root {
-            width: 100%;
-            height: 100%;
+            width: 390px;    /* largeur "iPhone" fixe */
+            height: 844px;   /* hauteur "iPhone" fixe */
+            max-width: 100%;
+            /* si l'écran est plus petit en hauteur, le body va scroller
+               mais le téléphone garde sa vraie taille, donc mêmes icônes partout */
             position: relative;
             overflow: hidden;
         }
@@ -57,9 +53,7 @@
 </head>
 
 <body>
-    <div class="phone-shell">
-        <div id="root"></div>
-    </div>
+    <div id="root"></div>
 </body>
 
 </html>

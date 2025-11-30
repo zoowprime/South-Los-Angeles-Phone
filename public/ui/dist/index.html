@@ -5,11 +5,10 @@
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
 
-    <!-- 🔧 Viewport adapté au rendu téléphone fixe -->
-    <!-- On force une largeur "iPhone" (~390px) pour avoir le même rendu PC / mobile -->
+    <!-- Viewport normal, on laisse le navigateur donner les vraies tailles -->
     <meta
         name="viewport"
-        content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
 
     <meta name="theme-color" content="#000000" />
@@ -19,12 +18,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet"
     />
     <link href="https://fonts.cdnfonts.com/css/proxima-nova-2" rel="stylesheet" />
 
-    <!-- 🔥 Style pour centrer LE TÉLÉPHONE 🔥 -->
+    <!-- Même centrage qu'avant (PC nickel), mais on va scaler le conteneur sur tel -->
     <style>
         html,
         body {
@@ -38,15 +37,57 @@
             background: #fff;
             overflow: hidden;
         }
+
+        /* Nouveau conteneur pour le téléphone */
+        #phone-container {
+            width: 430px;   /* largeur design (iPhone style) */
+            height: 932px;  /* hauteur design */
+            transform-origin: center center;
+        }
+
+        /* Le LB Phone se dessine dans #root comme avant */
+        #root {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 
     <title>LB Phone</title>
+    <!-- bundle du téléphone -->
     <script type="module" crossorigin src="/ui/dist/assets/index-a04bc7c5.js"></script>
-    <link rel="stylesheet" href="/ui/dist/assets/index-5a998551.css">
+    <link rel="stylesheet" href="/ui/dist/assets/index-5a998551.css" />
 </head>
 
 <body>
-    <div id="root"></div>
+    <!-- On a juste ajouté phone-container autour de root -->
+    <div id="phone-container">
+        <div id="root"></div>
+    </div>
+
+    <!-- 🔥 Script qui scale le téléphone sur petits écrans (tel), sans toucher au PC -->
+    <script>
+        (function () {
+            const DESIGN_WIDTH = 430;
+            const DESIGN_HEIGHT = 932;
+            const container = document.getElementById('phone-container');
+
+            function updateScale() {
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+
+                // Échelle pour que tout le téléphone rentre dans l'écran
+                const scaleX = w / DESIGN_WIDTH;
+                const scaleY = h / DESIGN_HEIGHT;
+                const scale = Math.min(scaleX, scaleY);
+
+                container.style.transform = 'scale(' + scale + ')';
+            }
+
+            window.addEventListener('resize', updateScale);
+            window.addEventListener('orientationchange', updateScale);
+            updateScale();
+        })();
+    </script>
 </body>
 
 </html>

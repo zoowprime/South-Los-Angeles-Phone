@@ -1,0 +1,5 @@
+/* évite les comportements par défaut de vite */
+body {
+  margin: 0;
+  padding: 0;
+}

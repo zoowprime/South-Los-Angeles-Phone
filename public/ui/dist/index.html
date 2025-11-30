@@ -11,29 +11,38 @@
     <link href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />
     <link href="https://fonts.cdnfonts.com/css/proxima-nova-2" rel="stylesheet" />
 
-    <!-- 🔥 STYLE GLOBAL POUR CENTRER LE TÉLÉPHONE ET LE FIXER 🔥 -->
+    <!-- 🔥 Layout du téléphone : même rendu PC / mobile 🔥 -->
     <style>
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             display: flex;
-            justify-content: center; /* centre horizontal */
-            align-items: center;     /* centre vertical */
-            background: #fff;        /* fond derrière le téléphone */
+            justify-content: center;   /* centre horizontal */
+            align-items: center;       /* centre vertical */
+            background: #ffffff;       /* fond derrière le téléphone */
             overflow: hidden;
         }
 
-        /* Taille FIXE du téléphone */
+        /* Coquille du téléphone : taille "réelle" fixe */
+        .phone-shell {
+            width: 390px;   /* largeur design */
+            height: 844px;  /* hauteur design */
+            transform-origin: center center;
+            /* Sur les grands écrans → scale = 1
+               Sur les écrans plus petits → on réduit pour tout faire rentrer */
+            transform: scale(calc(min(1, 100vh / 844px)));
+        }
+
+        /* Le vrai root React du LB Phone reste à sa taille design */
         #root {
-            width: 390px;   /* Largeur type iPhone 15 */
-            height: 844px;  /* Hauteur type iPhone 15 */
-            max-width: 100%;
-            max-height: 100%;
+            width: 390px;
+            height: 844px;
             overflow: hidden;
             position: relative;
         }
@@ -45,7 +54,10 @@
 </head>
 
 <body>
-    <div id="root"></div>
+    <!-- On enveloppe le root dans une coquille qui gère la taille & le scale -->
+    <div class="phone-shell">
+        <div id="root"></div>
+    </div>
 </body>
 
 </html>

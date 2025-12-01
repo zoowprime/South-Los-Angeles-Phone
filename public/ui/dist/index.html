@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <title>LB Phone</title>
 
-    <!-- viewport normal -->
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
@@ -37,7 +36,7 @@
         justify-content: center;
       }
 
-      /* Écran du téléphone (iframe) */
+      /* 📱 Écran du téléphone (iframe) */
       .phone-frame {
         border: none;
         border-radius: 32px;
@@ -46,26 +45,26 @@
           0 0 0 1px rgba(255, 255, 255, 0.05),
           0 24px 50px rgba(0, 0, 0, 0.9);
 
-        /* ratio iPhone */
+        /* on garde le ratio iPhone */
         aspect-ratio: 9 / 19.5;
-
-        /* ✅ On s’adapte à la hauteur dispo : jamais plus grand que l’écran */
-        height: min(100vh - 32px, 820px);
-        max-height: 100vh - 16px;
-
-        /* largeur dérivée de la hauteur + ratio, mais on limite pour éviter d’exploser sur PC */
-        max-width: min(430px, 100vw - 24px);
-        width: auto;
-
         background: #000;
+
+        /*
+          On calcule la taille pour prendre le MAX possible
+          sans dépasser ni la largeur ni la hauteur de l'écran :
+          - largeur max : 430px ou 100vw - 24
+          - hauteur max : 100vh - 24
+        */
+        width: min(430px, 100vw - 24px);
+        height: min(100vh - 24px, (100vw - 24px) * 19.5 / 9);
       }
 
+      /* Sur très petits écrans : on colle au bord, on évite les gros arrondis */
       @media (max-width: 380px) {
         .phone-frame {
           border-radius: 24px;
-          height: 100vh;
-          max-height: 100vh;
-          max-width: 100vw;
+          width: calc(100vw - 12px);
+          height: min(100vh - 12px, (100vw - 12px) * 19.5 / 9);
         }
       }
     </style>
@@ -73,7 +72,6 @@
 
   <body>
     <div class="phone-wrapper">
-      <!-- On charge le LB Phone original dans une “fenêtre” fixe -->
       <iframe
         src="internal.html"
         class="phone-frame"

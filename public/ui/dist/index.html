@@ -18,65 +18,67 @@
 
     <title>LB Phone</title>
 
-    <!-- Bundle JS/CSS du LB Phone -->
+    <!-- JS/CSS générés par le build du LB Phone -->
     <script type="module" crossorigin src="/ui/dist/assets/index-a04bc7c5.js"></script>
     <link rel="stylesheet" href="/ui/dist/assets/index-5a998551.css">
 
-    <!-- 🎯 Overrides pour un rendu propre sur MOBILE & PC -->
+    <!-- 🎯 Overrides RESPONSIVE : version web mobile propre, sans casser la version PC -->
     <style>
-        /* On remet une base clean sur la page */
+        :root {
+            /* dimensions "design" du téléphone (approx iPhone 14/15) */
+            --phone-design-width: 430;
+            --phone-design-height: 932;
+        }
+
         html,
         body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
         }
 
+        /* Par défaut (PC) : on laisse le CSS du LB phone gérer le layout.
+           On se contente juste d'un fond propre. */
         body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle at top, #020615, #050711 60%);
-            /* si tu veux permettre le scroll sur petits écrans, mets "auto" à la place */
-            overflow: hidden;
+            background: #000;
         }
 
-        /* On centre le root React */
+        /* Le LB phone monte tout dans #root, on va s'en servir comme "bloc téléphone" à scaler sur mobile */
         #root {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            /* pas de styles par défaut pour ne pas toucher au PC */
         }
 
-        /* On neutralise le positionnement FiveM/NUI pour l’adapter au web/mobile */
-        .phone-container {
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            transform: none !important;
+        /* 📱 Spécial MOBILE / petits écrans : on centre & on scale le téléphone entier */
+        @media (max-width: 900px) {
 
-            /* Taille max type iPhone, mais responsive */
-            width: min(430px, 100vw - 24px) !important;
-            height: auto !important;
-            aspect-ratio: 9 / 19.5;
-            margin: auto;
-        }
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden; /* on évite le scroll moche, on préfère ajuster l'échelle */
+            }
 
-        .phone-frame {
-            position: relative !important;
-            width: 100% !important;
-            height: 100% !important;
-        }
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: radial-gradient(circle at top, #020615, #050711 60%);
+            }
 
-        /* Sur très petits écrans, on laisse le téléphone prendre toute la largeur */
-        @media (max-width: 380px) {
-            .phone-container {
-                width: 100vw !important;
-                height: auto !important;
-                border-radius: 0 !important;
+            #root {
+                /* On dit au téléphone interne : "tu fais comme si tu avais cette taille" */
+                width: calc(var(--phone-design-width) * 1px);
+                height: calc(var(--phone-design-height) * 1px);
+
+                /* On le centre et on change l'origine pour le scale */
+                transform-origin: center center;
+
+                /* On calcule une échelle qui s'adapte à la fois à la largeur ET à la hauteur de l'écran */
+                transform: scale(
+                    min(
+                        calc(100vw / (var(--phone-design-width) * 1px)),
+                        calc(100vh / (var(--phone-design-height) * 1px))
+                    )
+                );
             }
         }
     </style>
